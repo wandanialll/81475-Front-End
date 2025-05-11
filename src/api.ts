@@ -11,7 +11,7 @@ export const getLecturerCourses = async () => {
 	console.log("Token from local_s storage:", localStorage.getItem("token")); // For debugging
 	console.log("Token from Zustand store:", zutoken); // For debugging
 	const response = await axios.get(
-		"http://localhost:5000/api/lecturer/courses",
+		"https://railwaytesting-production-f102.up.railway.app/api/lecturer/courses",
 		{
 			headers: {
 				Authorization: `Bearer ${localStorage.getItem("token")}`,

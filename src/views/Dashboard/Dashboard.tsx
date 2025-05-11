@@ -29,10 +29,10 @@ const mockStudents = [
 	},
 ];
 
-type Student = {
-	studentId: string;
-	name: string;
-};
+// type Student = {
+// 	studentId: string;
+// 	name: string;
+// };
 
 export default function Dashboard() {
 	return (
