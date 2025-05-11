@@ -25,6 +25,14 @@ export default function Sidebar() {
 				>
 					Create Attendance
 				</Link>
+				<Link
+					to="/courses"
+					className={clsx("hover:bg-gray-700 p-2 rounded", {
+						"bg-gray-700": pathname === "/courses",
+					})}
+				>
+					Courses
+				</Link>
 			</nav>
 		</aside>
 	);

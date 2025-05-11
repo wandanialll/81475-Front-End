@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 
 export default function Login() {
 	const setUser = useAuthStore((state) => state.setUser);
+	const setToken = useAuthStore((state) => state.setToken);
 	const navigate = useNavigate();
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
@@ -21,7 +22,18 @@ export default function Login() {
 				email,
 				password
 			);
-			setUser(userCredential.user);
+			const user = userCredential.user;
+
+			//  Get ID token
+			const token = await user.getIdToken(true);
+			console.log("Token:", token); // For debugging
+
+			setToken(token); // Set token in Zustand store
+
+			// Set token and user globally (Zustand, etc.)
+			setUser(user); // already in your code
+			localStorage.setItem("token", token); // or use Zustand
+
 			navigate("/");
 		} catch (err) {
 			setError("Invalid email or password");
