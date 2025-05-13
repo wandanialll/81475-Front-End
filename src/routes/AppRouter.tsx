@@ -8,6 +8,7 @@ import Dashboard from "@/views/Dashboard/Dashboard";
 import NotFound from "@/views/NotFound/NotFound";
 import CreateAttendance from "@/views/CreateAttendance/CreateAttendance";
 import Courses from "@/views/Courses/Courses";
+import CourseDashboard from "@/views/CourseDashboard/CourseDashboard";
 
 import MainLayout from "@/components/layout/MainLayout";
 
@@ -34,6 +35,10 @@ export default function AppRouter() {
 					<Route path="create-attendance" element={<CreateAttendance />} />
 					<Route path="courses" element={<Courses />} />
 					{/* Add more nested routes here if needed */}
+					<Route
+						path="course/:courseId/dashboard"
+						element={<CourseDashboard />}
+					/>
 				</Route>
 
 				<Route path="*" element={<NotFound />} />

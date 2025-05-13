@@ -5,11 +5,12 @@ interface MetricCardProps {
 	title: string;
 	value: string | number;
 	icon?: React.ReactNode;
+	bgColor?: string;
 }
 
-export function MetricCard({ title, value, icon }: MetricCardProps) {
+export function MetricCard({ title, value, icon, bgColor }: MetricCardProps) {
 	return (
-		<Card>
+		<Card className={`bg-${bgColor || ""}`}>
 			<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
 				<CardTitle className="text-sm font-medium">{title}</CardTitle>
 				{icon && <div className="text-muted-foreground">{icon}</div>}

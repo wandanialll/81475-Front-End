@@ -9,7 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 
 interface Student {
-	id: string;
+	student_id: string;
 	name: string;
 	status: "present" | "absent";
 	lastSeen?: string;
@@ -17,20 +17,21 @@ interface Student {
 
 interface StudentListProps {
 	students: Student[];
+	courseName?: string;
 	onAddStudent?: () => void;
 }
 
-export function StudentList({ students, onAddStudent }: StudentListProps) {
+export function StudentList({
+	students,
+	courseName,
+	onAddStudent,
+}: StudentListProps) {
 	return (
 		<div className="space-y-4">
 			<div className="flex items-center justify-between">
-				<h2 className="text-xl font-semibold">TMF4913 Student List</h2>
-				<Button
-					onClick={onAddStudent}
-					className="bg-rose-400 hover:bg-rose-500"
-				>
-					Add Student
-				</Button>
+				<h2 className="text-xl font-semibold">
+					{courseName ?? "Course"} Student List
+				</h2>
 			</div>
 			<Table>
 				<TableHeader>
@@ -42,7 +43,7 @@ export function StudentList({ students, onAddStudent }: StudentListProps) {
 				</TableHeader>
 				<TableBody>
 					{students.map((student) => (
-						<TableRow key={student.id}>
+						<TableRow key={student.student_id}>
 							<TableCell>{student.name}</TableCell>
 							<TableCell>
 								<span

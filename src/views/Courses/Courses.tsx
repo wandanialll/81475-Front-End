@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuthStore } from "@/store/authStore";
 import { getLecturerCourses } from "@/api";
+import { useNavigate } from "react-router-dom";
 
 interface Course {
 	course_id: string;
@@ -14,6 +15,7 @@ interface Course {
 const Courses: React.FC = () => {
 	const user = useAuthStore((state) => state.user);
 	const [courses, setCourses] = React.useState<Course[]>([]);
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		const fetchCourses = async () => {
@@ -31,7 +33,7 @@ const Courses: React.FC = () => {
 		<div className="p-6">
 			<div className="flex justify-between items-center mb-6">
 				<h1 className="text-2xl font-bold">My Courses</h1>
-				<Input placeholder="Search courses..." className="w-1/3" />
+				{/* <Input placeholder="Search courses..." className="w-1/3" /> */}
 			</div>
 			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 				{courses.map((course) => (
@@ -44,7 +46,14 @@ const Courses: React.FC = () => {
 						</CardHeader>
 						<CardContent>
 							<p>{course.name}</p>
-							<Button className="mt-4">Enroll Now</Button>
+							<Button
+								className="mt-4"
+								onClick={() =>
+									navigate(`/course/${course.course_id}/dashboard`)
+								}
+							>
+								Details
+							</Button>
 						</CardContent>
 					</Card>
 				))}

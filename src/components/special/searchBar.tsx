@@ -16,7 +16,7 @@ export function SearchBar({
 			<Input
 				placeholder={placeholder}
 				onChange={(e) => onChange?.(e.target.value)}
-				className="pl-8 bg-rose-100/50"
+				className="pl-8"
 			/>
 		</div>
 	);
