@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { useAuthStore } from "@/store/authStore";
 import { getLecturerCourses } from "@/api";
 import { useNavigate } from "react-router-dom";

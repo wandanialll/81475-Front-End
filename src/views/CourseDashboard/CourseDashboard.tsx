@@ -1,15 +1,7 @@
 // src/views/CourseDashboard/CourseDashboard.tsx
-import React, { use, useEffect, useState } from "react";
-import {
-	Users,
-	UserCheck,
-	UserX,
-	AlertTriangle,
-	CornerDownLeft,
-} from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import React, { useEffect, useState } from "react";
+import { Users, UserCheck, UserX, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { SearchBar } from "@/components/special/searchBar";
 import { MetricCard } from "@/components/special/metricCard";
 import { StudentList } from "@/components/special/studentList";
 import { useParams } from "react-router-dom"; // Import useParams

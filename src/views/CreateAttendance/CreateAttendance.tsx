@@ -1,9 +1,7 @@
 "use client";
 
 import { SetStateAction, useEffect, useState } from "react";
-import axios from "axios";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import {
 	Select,

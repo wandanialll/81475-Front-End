@@ -3,7 +3,6 @@ import { signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { useAuthStore } from "@/store/authStore";
 import { Button } from "../ui/button";
-import { SearchBar } from "../special/searchBar";
 import { SearchContainer } from "../special/SearchContainer";
 
 export default function TopNav() {

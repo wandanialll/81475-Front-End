@@ -6,7 +6,6 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
 
 interface Student {
 	student_id: string;
@@ -21,11 +20,7 @@ interface StudentListProps {
 	onAddStudent?: () => void;
 }
 
-export function StudentList({
-	students,
-	courseName,
-	onAddStudent,
-}: StudentListProps) {
+export function StudentList({ students, courseName }: StudentListProps) {
 	return (
 		<div className="space-y-4">
 			<div className="flex items-center justify-between">
