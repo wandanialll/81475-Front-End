@@ -6,8 +6,10 @@ const zutoken = useAuthStore.getState().token; // Get the token from Zustand sto
 const token = localStorage.getItem("token"); // Get the token from local storage
 
 // declare root url for all api calls
-// const rootUrl = "https://railwaytesting-production-f102.up.railway.app/api";
-const rootUrl = "http://localhost:5000/";
+//const rootUrl = "https://railwaytesting-production-f102.up.railway.app/";
+//const rootUrl = "http://localhost:5000/";
+//const rootUrl = "http://152.42.239.54/";
+const rootUrl = "https://api.wandanial.com/";
 
 export const getLecturerCourses = async () => {
 	// Check if the token is available
@@ -76,6 +78,19 @@ export const getOpenAttendanceSheets = async (courseId: string) => {
 	return response.data;
 };
 
+// fetch attendance sheet by session id
+export const getAttendanceSheetBySessionId = async (sessionId: string) => {
+	const response = await axios.get(
+		`${rootUrl}api/attendance/sheet/${sessionId}`,
+		{
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
+			},
+		}
+	);
+	return response.data;
+};
+
 // close attendance sheet
 export const closeAttendanceSheet = async (sheetId: string) => {
 	const response = await axios.post(
@@ -98,5 +113,72 @@ export const getMainDashboard = async () => {
 			Authorization: `Bearer ${localStorage.getItem("token")}`,
 		},
 	});
+	return response.data;
+};
+
+// search
+
+export const search = async (query: string) => {
+	const response = await axios.get(`${rootUrl}api/search?q=${query}`, {
+		headers: {
+			Authorization: `Bearer ${localStorage.getItem("token")}`,
+		},
+	});
+	return response.data;
+};
+
+// enrollment
+
+export const enroll = async (name: string, photos: File[]) => {
+	const formData = new FormData();
+	formData.append("name", name);
+
+	// Append all photos with the **same** field name "photo"
+	photos.forEach((photo, index) => {
+		if (photo) {
+			formData.append("photo", photo, `${name}_${index + 1}.jpg`);
+		}
+	});
+
+	const response = await axios.post(`${rootUrl}api/enroll`, formData, {
+		headers: {
+			Authorization: `Bearer ${localStorage.getItem("token")}`,
+			"Content-Type": "multipart/form-data",
+		},
+	});
+	return response.data;
+};
+
+// overall lecturer attendance
+export const getLecturerAttendancePerformance = async () => {
+	const response = await axios.get(
+		`${rootUrl}api/lecturer/attendance/overall-sessions`,
+		{
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
+			},
+		}
+	);
+	return response.data;
+};
+
+// fetch facial recognition attendance
+export const fetchFacialRecognitionAttendance = async (
+	sessionId: string,
+	imageBase64: string
+) => {
+	const response = await axios.post(
+		`${rootUrl}api/attendance/mark-by-face`,
+		{
+			image: imageBase64,
+			session_id: sessionId,
+		},
+		{
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
+				"Content-Type": "application/json",
+			},
+		}
+	);
 	return response.data;
 };

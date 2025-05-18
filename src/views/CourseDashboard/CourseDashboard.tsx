@@ -9,6 +9,7 @@ import { useParams } from "react-router-dom"; // Import useParams
 import { getCourseDashboard } from "@/api";
 import { getOpenAttendanceSheets } from "@/api";
 import { closeAttendanceSheet } from "@/api";
+import { Link } from "react-router-dom"; // Import Link for navigation
 
 interface Student {
 	student_id: string;
@@ -168,6 +169,14 @@ const CourseDashboard: React.FC = () => {
 										>
 											Close Sheet
 										</Button>
+										{/* navigate to expand sheet details at AttendanceSheet */}
+										{/* <Link
+											to={`/course/${courseId}/attendance/sheet/${sheet.session_id}`}
+										> */}
+										<Link to={`/face-scan?session_id=${sheet.session_id}`}>
+											Mark Attendance via Face
+											<Button>View Details</Button>
+										</Link>
 									</div>
 								))}
 							</div>

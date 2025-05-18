@@ -9,8 +9,13 @@ import NotFound from "@/views/NotFound/NotFound";
 import CreateAttendance from "@/views/CreateAttendance/CreateAttendance";
 import Courses from "@/views/Courses/Courses";
 import CourseDashboard from "@/views/CourseDashboard/CourseDashboard";
+import EnrollmentPage from "@/views/Enrollment/Enrollment";
+import StudentPhotos from "@/views/StudentPhotos/StudentPhotos";
+import FaceRecognition from "@/views/AttendancePage/AttendancePage";
+import FaceScan from "@/components/special/FaceScan";
 
 import MainLayout from "@/components/layout/MainLayout";
+import AttendanceSheet from "@/views/AttendanceSheet/AttendanceSheet";
 
 const PrivateRoute = ({ children }: { children: React.JSX.Element }) => {
 	const { isAuthenticated } = useAuthStore();
@@ -22,6 +27,9 @@ export default function AppRouter() {
 		<BrowserRouter>
 			<Routes>
 				<Route path="/login" element={<Login />} />
+				<Route path="enrollment" element={<EnrollmentPage />} />
+				<Route path="studentphotos" element={<StudentPhotos />} />
+				<Route path="recognition" element={<FaceRecognition />} />
 
 				<Route
 					path="/"
@@ -34,10 +42,17 @@ export default function AppRouter() {
 					<Route index element={<Dashboard />} />
 					<Route path="create-attendance" element={<CreateAttendance />} />
 					<Route path="courses" element={<Courses />} />
+					<Route path="/face-scan" element={<FaceScan />} />
+
 					{/* Add more nested routes here if needed */}
 					<Route
 						path="course/:courseId/dashboard"
 						element={<CourseDashboard />}
+					/>
+					{/* open sheet by session id */}
+					<Route
+						path="course/:courseId/attendance/sheet/:sessionId"
+						element={<AttendanceSheet />}
 					/>
 				</Route>
 

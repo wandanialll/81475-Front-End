@@ -16,6 +16,7 @@ import { StudentList } from "@/components/special/studentList";
 import { useAuthStore } from "@/store/authStore";
 import { getMainDashboard } from "@/api";
 import { useEffect, useState } from "react";
+import AttendanceLineChart from "@/components/special/AttendanceLineChart";
 
 // const mockStudents = [
 // 	{
@@ -110,7 +111,9 @@ export default function Dashboard() {
 							<h2 className="text-xl font-semibold mb-4">
 								{user?.email}'s Attendance
 							</h2>
-							<div className="h-[300px] rounded-lg bg-gray-100/50"></div>
+							<div className="h-[300px] rounded-lg bg-gray-100/50">
+								<AttendanceLineChart />
+							</div>
 						</div>
 					</div>
 
