@@ -7,9 +7,11 @@ const token = localStorage.getItem("token"); // Get the token from local storage
 
 // declare root url for all api calls
 //const rootUrl = "https://railwaytesting-production-f102.up.railway.app/";
-//const rootUrl = "http://localhost:5000/";
+const rootUrl = "http://localhost:5000/";
 //const rootUrl = "http://152.42.239.54/";
-const rootUrl = "https://api.wandanial.com/";
+//const rootUrl = "https://api.wandanial.com/";
+
+//chrome takle bukak camera
 
 export const getLecturerCourses = async () => {
 	// Check if the token is available
@@ -165,14 +167,23 @@ export const getLecturerAttendancePerformance = async () => {
 // fetch facial recognition attendance
 export const fetchFacialRecognitionAttendance = async (
 	sessionId: string,
-	imageBase64: string
+	imageBase64: string,
+	reset: boolean = false
 ) => {
+	const payload: any = {
+		session_id: sessionId,
+	};
+
+	if (reset) {
+		payload.reset = true;
+	} else if (imageBase64) {
+		payload.image = imageBase64;
+	} else {
+		throw new Error("No image provided");
+	}
 	const response = await axios.post(
 		`${rootUrl}api/attendance/mark-by-face`,
-		{
-			image: imageBase64,
-			session_id: sessionId,
-		},
+		payload,
 		{
 			headers: {
 				Authorization: `Bearer ${localStorage.getItem("token")}`,

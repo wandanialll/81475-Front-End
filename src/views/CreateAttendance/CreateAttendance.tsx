@@ -13,6 +13,7 @@ import {
 import { getLecturerCourses } from "@/api";
 import { createAttendanceSheet } from "@/api";
 import { useAuthStore } from "@/store/authStore";
+import { useNavigate } from "react-router-dom";
 
 const CreateAttendanceSheet = () => {
 	const [courses, setCourses] = useState<any[]>([]);
@@ -20,6 +21,8 @@ const CreateAttendanceSheet = () => {
 	const [status, setStatus] = useState<string | null>(null);
 	const [resetKey, setResetKey] = useState(0); // State to trigger reset
 	const user = useAuthStore((state) => state.user);
+
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		const fetchCourses = async () => {
@@ -42,6 +45,8 @@ const CreateAttendanceSheet = () => {
 			setStatus("Attendance sheet created successfully!");
 			setSelectedCourseId(null); // Reset selected course
 			setResetKey((prevKey) => prevKey + 1); // Increment reset key to re-render
+			// route to the related course dashboard
+			navigate(`/course/${selectedCourseId}/dashboard`);
 		} catch (error) {
 			setStatus("Error creating attendance sheet.");
 		}

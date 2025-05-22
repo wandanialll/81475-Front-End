@@ -7,6 +7,9 @@ const FaceScan: React.FC = () => {
 	const [sessionId, setSessionId] = useState<string | null>(null);
 	const [status, setStatus] = useState("");
 	const [isStreaming, setIsStreaming] = useState(true);
+	const [matches, setMatches] = useState<
+		{ student_id: string; score: number; face: string }[]
+	>([]);
 	const INTERVAL_MS = 500; // 1 image every 3 seconds
 
 	useEffect(() => {
@@ -47,29 +50,6 @@ const FaceScan: React.FC = () => {
 		ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 		const imageBase64 = canvas.toDataURL("image/jpeg");
 
-		// try {
-		// 	const res = await fetch(
-		// 		"http://localhost:5000/api/attendance/mark-by-face",
-		// 		{
-		// 			method: "POST",
-		// 			headers: {
-		// 				"Content-Type": "application/json",
-		// 				Authorization: `Bearer ${localStorage.getItem("token")}`,
-		// 			},
-		// 			body: JSON.stringify({ image: imageBase64, session_id: sessionId }),
-		// 		}
-		// 	);
-
-		// 	const data = await res.json();
-		// 	setStatus(JSON.stringify(data, null, 2));
-
-		// 	if (data.allAccounted) {
-		// 		setIsStreaming(false);
-		// 	}
-		// } catch (err) {
-		// 	console.error("Error sending image:", err);
-		// 	setStatus("Error sending image.");
-		// }
 		try {
 			if (!sessionId) {
 				setStatus("Session ID is missing.");
@@ -81,12 +61,27 @@ const FaceScan: React.FC = () => {
 			);
 			setStatus(JSON.stringify(data, null, 2));
 
+			if (data.matches) {
+				setMatches(data.matches);
+			}
+
 			if (data.allAccounted) {
 				setIsStreaming(false);
 			}
 		} catch (err) {
 			console.error("Error sending image:", err);
 			setStatus("Error sending image.");
+		}
+	};
+
+	const resetScanning = async () => {
+		if (!sessionId) return;
+		try {
+			await fetchFacialRecognitionAttendance(sessionId, "", true); // true = reset flag
+			setMatches([]); // Clear local UI matches
+			setIsStreaming(true);
+		} catch (err) {
+			console.error("Failed to reset scanning:", err);
 		}
 	};
 
@@ -107,6 +102,26 @@ const FaceScan: React.FC = () => {
 					Resume Scanning
 				</button>
 			)}
+			<button
+				onClick={resetScanning}
+				className="bg-yellow-500 text-white py-2 px-4 rounded"
+			>
+				Scan Everyone Again
+			</button>
+
+			{matches.length > 0 &&
+				matches.map((match, idx) => (
+					<div key={idx}>
+						<p>Student ID: {match.student_id}</p>
+						<p>Score: {match.score.toFixed(2)}</p>
+						<img
+							src={match.face}
+							alt={`Face of student ${match.student_id}`}
+							width={100}
+						/>
+					</div>
+				))}
+
 			<pre className="bg-gray-100 p-2 mt-4 rounded w-full max-w-lg overflow-auto">
 				{status}
 			</pre>
