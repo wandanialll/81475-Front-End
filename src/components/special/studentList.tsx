@@ -24,7 +24,7 @@ export function StudentList({ students, courseName }: StudentListProps) {
 	return (
 		<div className="space-y-4">
 			<div className="flex items-center justify-between">
-				<h2 className="text-xl font-semibold">
+				<h2 className="text-xl font-semibold underline underline-offset-1 decoration-4 decoration-primary">
 					{courseName ?? "Course"} Student List
 				</h2>
 			</div>

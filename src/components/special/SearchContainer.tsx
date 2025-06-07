@@ -57,13 +57,13 @@ export const SearchContainer: React.FC = () => {
 	};
 
 	return (
-		<div className="space-y-2">
+		<div className="relative w-full space-y-2">
 			<SearchBar
 				placeholder="Search students or actions..."
 				onChange={setQuery}
 			/>
 			{results.length > 0 && (
-				<ul className="bg-white border rounded-md shadow p-2 space-y-1">
+				<ul className="absolute z-10 w-full bg-white border rounded-md shadow p-2 space-y-1 mt-1">
 					{results.map((res, idx) => {
 						if (!res || typeof res !== "object") return null;
 

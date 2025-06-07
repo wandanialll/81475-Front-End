@@ -12,6 +12,7 @@ import CourseDashboard from "@/views/CourseDashboard/CourseDashboard";
 import EnrollmentPage from "@/views/Enrollment/Enrollment";
 import StudentPhotos from "@/views/StudentPhotos/StudentPhotos";
 import FaceRecognition from "@/views/AttendancePage/AttendancePage";
+import Chat from "@/views/Chat/Chat";
 import FaceScan from "@/components/special/FaceScan";
 
 import MainLayout from "@/components/layout/MainLayout";
@@ -27,9 +28,11 @@ export default function AppRouter() {
 		<BrowserRouter>
 			<Routes>
 				<Route path="/login" element={<Login />} />
-				<Route path="enrollment" element={<EnrollmentPage />} />
-				<Route path="studentphotos" element={<StudentPhotos />} />
-				<Route path="recognition" element={<FaceRecognition />} />
+				<Route path="/enrollment" element={<EnrollmentPage />} />
+				<Route path="/studentphotos" element={<StudentPhotos />} />
+				<Route path="/recognition" element={<FaceRecognition />} />
+
+				{/* Public routes */}
 
 				<Route
 					path="/"
@@ -42,6 +45,7 @@ export default function AppRouter() {
 					<Route index element={<Dashboard />} />
 					<Route path="create-attendance" element={<CreateAttendance />} />
 					<Route path="courses" element={<Courses />} />
+					<Route path="chat" element={<Chat />} />
 					<Route path="/face-scan" element={<FaceScan />} />
 
 					{/* Add more nested routes here if needed */}

@@ -6,6 +6,10 @@ import { auth } from "@/lib/firebase";
 import { useAuthStore } from "@/store/authStore";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+
+// import logo
+import logo from "@/images/logo_firasat.png";
 
 export default function Login() {
 	const setUser = useAuthStore((state) => state.setUser);
@@ -41,32 +45,37 @@ export default function Login() {
 	};
 
 	return (
-		<div className="flex items-center justify-center h-screen bg-black">
-			<div className="bg-white p-8 rounded-lg shadow-md w-full max-w-sm">
-				<h2 className="text-2xl font-bold mb-4">Sign In</h2>
-				{error && (
-					<p className="text-red-500 text-sm mb-2">
-						{error}. Contact your system administrator
-					</p>
-				)}
-				<Input
-					type="email"
-					placeholder="Email"
-					className="mb-3"
-					value={email}
-					onChange={(e) => setEmail(e.target.value)}
-				/>
-				<Input
-					type="password"
-					placeholder="Password"
-					className="mb-4"
-					value={password}
-					onChange={(e) => setPassword(e.target.value)}
-				/>
-				<Button className="w-full" onClick={handleLogin}>
-					Sign In
-				</Button>
-			</div>
+		<div className="flex items-center justify-center h-screen">
+			<Card className="flex flex-row items-center p-5 space-x-5 ">
+				<div className="w-max">
+					<img src={logo} alt="Logo" className="w-60 h-60 justify-center" />
+				</div>
+				<div className="flex flex-col bg-white items-center w-96">
+					<h2 className="text-2xl font-bold mb-4">Sign In</h2>
+					{error && (
+						<p className="text-red-500 text-sm mb-2">
+							{error}. Contact your system administrator
+						</p>
+					)}
+					<Input
+						type="email"
+						placeholder="Email"
+						className="mb-3"
+						value={email}
+						onChange={(e) => setEmail(e.target.value)}
+					/>
+					<Input
+						type="password"
+						placeholder="Password"
+						className="mb-4"
+						value={password}
+						onChange={(e) => setPassword(e.target.value)}
+					/>
+					<Button variant={"themed"} className="w-full" onClick={handleLogin}>
+						Sign In
+					</Button>
+				</div>
+			</Card>
 		</div>
 	);
 }

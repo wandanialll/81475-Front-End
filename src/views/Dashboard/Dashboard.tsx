@@ -17,26 +17,7 @@ import { useAuthStore } from "@/store/authStore";
 import { getMainDashboard } from "@/api";
 import { useEffect, useState } from "react";
 import AttendanceLineChart from "@/components/special/AttendanceLineChart";
-
-// const mockStudents = [
-// 	{
-// 		student_id: "1",
-// 		name: "Wan Danial",
-// 		status: "present" as const,
-// 		lastSeen: "2 mins ago",
-// 	},
-// 	{
-// 		student_id: "2",
-// 		name: "Jane Smith",
-// 		status: "absent" as const,
-// 		lastSeen: "3 hours ago",
-// 	},
-// ];
-
-// type Student = {
-// 	studentId: string;
-// 	name: string;
-// };
+import { Card, CardHeader } from "@/components/ui/card";
 
 export default function Dashboard() {
 	const user = useAuthStore((state) => state.user);
@@ -107,14 +88,25 @@ export default function Dashboard() {
 					</div>
 
 					<div className="mt-6">
-						<div className="rounded-lg border bg-card p-4">
+						{/* <div className="rounded-lg border bg-card p-4">
 							<h2 className="text-xl font-semibold mb-4">
-								{user?.email}'s Attendance
+								Overall Attendance Performance
 							</h2>
 							<div className="h-[300px] rounded-lg bg-gray-100/50">
 								<AttendanceLineChart />
 							</div>
-						</div>
+						</div> */}
+						<h2 className="text-xl font-semibold mb-4 underline underline-offset-1 decoration-3 decoration-primary">
+							Overall Attendance Performance
+						</h2>
+						<Card>
+							<CardHeader>
+								{/* <CardTitle>Overall Attendance Performance</CardTitle> */}
+							</CardHeader>
+							<div className="h-[300px] rounded-lg pr-6">
+								<AttendanceLineChart />
+							</div>
+						</Card>
 					</div>
 
 					<div className="mt-6">

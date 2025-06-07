@@ -22,11 +22,13 @@ export default function TopNav() {
 	};
 
 	return (
-		<header className="h-16 bg-white border-b flex  justify-between px-4">
-			<div className="w-1/3 pt-4">
+		<header className="h-14 flex items-center justify-between px-4 shadow-2xs">
+			{/* Left side with search and border */}
+			<div className="w-1/3 ">
 				<SearchContainer />
 			</div>
 
+			{/* Right side with user info and logout button */}
 			<div className="flex items-center space-x-4">
 				<span className="text-gray-700">{user?.email}</span>
 				<Button variant="destructive" onClick={handleLogout}>

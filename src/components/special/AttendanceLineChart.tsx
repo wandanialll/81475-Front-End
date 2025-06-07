@@ -65,7 +65,7 @@ const AttendanceLineChart: React.FC = () => {
 		<div className="w-full h-full">
 			<h3 className="text-lg font-medium mb-2">{title}</h3>
 			<ResponsiveContainer width="100%" height="100%">
-				<ChartContainer config={chartConfig} className="w-full h-full">
+				<ChartContainer config={chartConfig} className="w-full h-full bg-white">
 					{/* <LineChart data={data}>
 					<CartesianGrid strokeDasharray="3 3" />
 					<XAxis dataKey="session" />
@@ -90,7 +90,7 @@ const AttendanceLineChart: React.FC = () => {
 					<AreaChart data={data}>
 						<CartesianGrid strokeDasharray="3 3" />
 						<XAxis dataKey="sessionId" />
-						<YAxis />
+						<YAxis allowDecimals={false} />
 						{/* <Tooltip /> */}
 						{/* <Legend /> */}
 						<ChartTooltip
@@ -100,8 +100,8 @@ const AttendanceLineChart: React.FC = () => {
 						<Area
 							type="monotone"
 							dataKey="present"
-							stroke="#16a34a"
-							fill="#B0DB9C"
+							stroke="#c1ffba"
+							fill="#baffd9"
 							strokeWidth={2}
 							name="Present"
 						/>
