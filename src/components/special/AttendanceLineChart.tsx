@@ -65,7 +65,10 @@ const AttendanceLineChart: React.FC = () => {
 		<div className="w-full h-full">
 			<h3 className="text-lg font-medium mb-2">{title}</h3>
 			<ResponsiveContainer width="100%" height="100%">
-				<ChartContainer config={chartConfig} className="w-full h-full bg-white">
+				<ChartContainer
+					config={chartConfig}
+					className="w-full h-full bg-transparent"
+				>
 					{/* <LineChart data={data}>
 					<CartesianGrid strokeDasharray="3 3" />
 					<XAxis dataKey="session" />

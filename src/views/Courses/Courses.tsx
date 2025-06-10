@@ -29,7 +29,7 @@ const Courses: React.FC = () => {
 		if (user) fetchCourses();
 	}, [user]);
 	return (
-		<div className="p-6">
+		<div>
 			<div className="flex justify-between items-center mb-6">
 				<h1 className="text-2xl font-bold">My Courses</h1>
 				{/* <Input placeholder="Search courses..." className="w-1/3" /> */}

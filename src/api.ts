@@ -193,3 +193,17 @@ export const fetchFacialRecognitionAttendance = async (
 	);
 	return response.data;
 };
+
+// student details
+export const getStudentDetails = async (studentId: string) => {
+	const response = await axios.get(
+		`${rootUrl}api/student-details/${studentId}`,
+		{
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
+				"Content-Type": "application/json",
+			},
+		}
+	);
+	return response.data;
+};

@@ -1,6 +1,5 @@
-// src/routes/AppRouter.tsx
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { useAuthStore } from "@/store/authStore"; // Adjust the import path as necessary
+import { useAuthStore } from "@/store/authStore";
 import React from "react";
 
 import Login from "@/views/Login/Login";
@@ -14,11 +13,15 @@ import StudentPhotos from "@/views/StudentPhotos/StudentPhotos";
 import FaceRecognition from "@/views/AttendancePage/AttendancePage";
 import Chat from "@/views/Chat/Chat";
 import FaceScan from "@/components/special/FaceScan";
-
 import MainLayout from "@/components/layout/MainLayout";
 import AttendanceSheet from "@/views/AttendanceSheet/AttendanceSheet";
+import StudentDetails from "@/components/special/StudentDetails";
 
-const PrivateRoute = ({ children }: { children: React.JSX.Element }) => {
+interface PrivateRouteProps {
+	children: React.ReactElement;
+}
+
+const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
 	const { isAuthenticated } = useAuthStore();
 	return isAuthenticated ? children : <Navigate to="/login" />;
 };
@@ -32,8 +35,6 @@ export default function AppRouter() {
 				<Route path="/studentphotos" element={<StudentPhotos />} />
 				<Route path="/recognition" element={<FaceRecognition />} />
 
-				{/* Public routes */}
-
 				<Route
 					path="/"
 					element={
@@ -46,17 +47,18 @@ export default function AppRouter() {
 					<Route path="create-attendance" element={<CreateAttendance />} />
 					<Route path="courses" element={<Courses />} />
 					<Route path="chat" element={<Chat />} />
-					<Route path="/face-scan" element={<FaceScan />} />
-
-					{/* Add more nested routes here if needed */}
+					<Route path="face-scan" element={<FaceScan />} />
 					<Route
 						path="course/:courseId/dashboard"
 						element={<CourseDashboard />}
 					/>
-					{/* open sheet by session id */}
 					<Route
 						path="course/:courseId/attendance/sheet/:sessionId"
 						element={<AttendanceSheet />}
+					/>
+					<Route
+						path="student-details/:studentId"
+						element={<StudentDetails />}
 					/>
 				</Route>
 

@@ -63,27 +63,28 @@ export default function Dashboard() {
 	return (
 		<div className="flex min-h-screen w-full">
 			<div className="flex-1">
-				<main className="p-6">
+				<main>
 					<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
 						<MetricCard
 							title="Total Students"
 							value={dashboardData?.totalUniqueStudents?.toString() ?? "0"}
-							icon={<Users className="h-4 w-4" />}
+							icon={<Users className="h-5 w-5" />}
 						/>
 						<MetricCard
 							title="Total Present"
 							value={dashboardData?.totalPresent?.toString() ?? "0"}
-							icon={<UserCheck className="h-4 w-4" />}
+							icon={<UserCheck className="h-5 w-5" />}
 						/>
 						<MetricCard
 							title="Total Absents"
 							value={dashboardData?.totalAbsents?.toString() ?? "0"}
-							icon={<UserX className="h-4 w-4" />}
+							icon={<UserX className="h-5 w-5" />}
 						/>
 						<MetricCard
+							bgColor="destructivesoft"
 							title="Alerts/Flags"
 							value={dashboardData?.totalAlerts?.toString() ?? "0"}
-							icon={<AlertTriangle className="h-4 w-4" />}
+							icon={<AlertTriangle className="h-5 w-5" />}
 						/>
 					</div>
 

@@ -7,7 +7,7 @@ export default function Sidebar() {
 	const { pathname } = useLocation();
 
 	return (
-		<aside className="w-48 text-black p-4 bg-secondary ">
+		<aside className="w-48 text-black p-4 bg-white/20 backdrop-blur-lg border border-white/20 rounded-md shadow-lg m-5">
 			<div className="flex flex-row items-center rounded-sm p-2 mb-4 space-x-4">
 				<img src={icon} alt="Logo" className="w-16 h-16" />
 				<h2 className="text-lg text-primary font-bold">FiRASAT</h2>

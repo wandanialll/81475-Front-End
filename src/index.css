@@ -1,6 +1,12 @@
-@import url("https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
+
+html,
+body {
+	font-family: "Ubuntu", "Open Sans", sans-serif;
+	font-weight: 400; /* Regular weight for Nunito */
+}
 
 @custom-variant dark (&:is(.dark *));
 
@@ -74,6 +80,7 @@
 
 	/* ✅ Destructive – strong red */
 	--destructive: oklch(0.72 0.25 27); /* Rich red */
+	--destructivesoft: oklch(0.85 0.15 27); /* Softer red for less emphasis */
 	--destructive-foreground: oklch(0.98 0.01 95); /* Light for contrast */
 
 	/* ✅ Form & UI */

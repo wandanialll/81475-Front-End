@@ -22,7 +22,7 @@ export default function TopNav() {
 	};
 
 	return (
-		<header className="h-14 flex items-center justify-between px-4 shadow-2xs">
+		<header className="h-14 flex items-center justify-between px-4 mt-5 mr-5 bg-white/20 backdrop-blur-lg border border-white/20 rounded-md shadow-lg ">
 			{/* Left side with search and border */}
 			<div className="w-1/3 ">
 				<SearchContainer />

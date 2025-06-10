@@ -1,16 +1,29 @@
 import React, { useEffect, useRef, useState } from "react";
 import { fetchFacialRecognitionAttendance } from "@/api";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+} from "../ui/card";
+import { Button } from "../ui/button";
 
 const FaceScan: React.FC = () => {
 	const videoRef = useRef<HTMLVideoElement>(null);
 	const canvasRef = useRef<HTMLCanvasElement>(null);
+	const streamRef = useRef<MediaStream | null>(null);
 	const [sessionId, setSessionId] = useState<string | null>(null);
 	const [status, setStatus] = useState("");
 	const [isStreaming, setIsStreaming] = useState(true);
-	const [matches, setMatches] = useState<
-		{ student_id: string; score: number; face: string }[]
+	const [recognizedStudents, setRecognizedStudents] = useState<
+		{ student_id: string; score: number; face: string; timestamp: Date }[]
 	>([]);
-	const INTERVAL_MS = 500; // 1 image every 3 seconds
+	const [scanStats, setScanStats] = useState<{
+		totalStudents: number;
+		totalPresent: number;
+	}>({ totalStudents: 0, totalPresent: 0 });
+	const INTERVAL_MS = 500; // 1 image every 500ms
 
 	useEffect(() => {
 		const query = new URLSearchParams(window.location.search);
@@ -21,11 +34,33 @@ const FaceScan: React.FC = () => {
 		}
 		setSessionId(id);
 
-		navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
-			if (videoRef.current) {
-				videoRef.current.srcObject = stream;
+		// Initialize camera
+		const initCamera = async () => {
+			try {
+				const stream = await navigator.mediaDevices.getUserMedia({
+					video: true,
+				});
+				streamRef.current = stream;
+				if (videoRef.current) {
+					videoRef.current.srcObject = stream;
+				}
+			} catch (error) {
+				console.error("Error accessing camera:", error);
+				setStatus("Error accessing camera. Please check permissions.");
 			}
-		});
+		};
+
+		initCamera();
+
+		// Cleanup function to stop camera when component unmounts
+		return () => {
+			if (streamRef.current) {
+				streamRef.current.getTracks().forEach((track) => {
+					track.stop();
+				});
+				streamRef.current = null;
+			}
+		};
 	}, []);
 
 	useEffect(() => {
@@ -59,14 +94,43 @@ const FaceScan: React.FC = () => {
 				sessionId,
 				imageBase64
 			);
-			setStatus(JSON.stringify(data, null, 2));
 
-			if (data.matches) {
-				setMatches(data.matches);
+			// Update status with scan info
+			if (data.matches && data.matches.length > 0) {
+				setStatus(`Found ${data.matches.length} new recognition(s)`);
+			} else if (data.status === "no_faces_detected") {
+				setStatus("No faces detected in current frame");
+			} else {
+				setStatus("Scanning...");
 			}
 
+			// Add new matches to the recognized students list
+			if (data.matches && data.matches.length > 0) {
+				setRecognizedStudents((prev) => {
+					const newStudents = data.matches.map((match: any) => ({
+						...match,
+						timestamp: new Date(),
+					}));
+
+					// Filter out duplicates by student_id and add new ones
+					const existingIds = new Set(prev.map((s) => s.student_id));
+					const uniqueNewStudents = newStudents.filter(
+						(s: { student_id: string }) => !existingIds.has(s.student_id)
+					);
+
+					return [...prev, ...uniqueNewStudents];
+				});
+			}
+
+			// Update scan statistics
+			if (data.stats) {
+				setScanStats(data.stats);
+			}
+
+			// Stop streaming if all students are accounted for
 			if (data.allAccounted) {
 				setIsStreaming(false);
+				setStatus("All students accounted for! Scanning stopped.");
 			}
 		} catch (err) {
 			console.error("Error sending image:", err);
@@ -78,53 +142,140 @@ const FaceScan: React.FC = () => {
 		if (!sessionId) return;
 		try {
 			await fetchFacialRecognitionAttendance(sessionId, "", true); // true = reset flag
-			setMatches([]); // Clear local UI matches
+			setRecognizedStudents([]); // Clear recognized students
+			setScanStats({ totalStudents: 0, totalPresent: 0 });
 			setIsStreaming(true);
+			setStatus("Reset complete. Starting fresh scan...");
 		} catch (err) {
 			console.error("Failed to reset scanning:", err);
+			setStatus("Failed to reset scanning.");
 		}
 	};
 
+	const stopCamera = () => {
+		if (streamRef.current) {
+			streamRef.current.getTracks().forEach((track) => {
+				track.stop();
+			});
+			streamRef.current = null;
+			setIsStreaming(false);
+			setStatus("Camera stopped");
+		}
+	};
+
+	const formatTimestamp = (timestamp: Date) => {
+		return timestamp.toLocaleTimeString();
+	};
+
 	return (
-		<div className="flex flex-col items-center gap-4 p-4">
-			<video
-				ref={videoRef}
-				autoPlay
-				playsInline
-				className="rounded-md shadow"
-			/>
-			<canvas ref={canvasRef} className="hidden" />
-			{!isStreaming && (
-				<button
-					onClick={() => setIsStreaming(true)}
-					className="bg-green-600 text-white py-2 px-4 rounded"
-				>
-					Resume Scanning
-				</button>
-			)}
-			<button
-				onClick={resetScanning}
-				className="bg-yellow-500 text-white py-2 px-4 rounded"
-			>
-				Scan Everyone Again
-			</button>
+		<div className="flex justify-center min-h-full space-x-5">
+			<div className="w-full">
+				<Card className="min-h-full">
+					<CardHeader>
+						<CardTitle>Face Scan Attendance</CardTitle>
+						<CardDescription>
+							Session ID: {sessionId || "Loading..."}
+						</CardDescription>
+						{scanStats.totalStudents > 0 && (
+							<div className="text-sm text-muted-foreground">
+								Progress: {scanStats.totalPresent} of {scanStats.totalStudents}{" "}
+								students present
+							</div>
+						)}
+					</CardHeader>
 
-			{matches.length > 0 &&
-				matches.map((match, idx) => (
-					<div key={idx}>
-						<p>Student ID: {match.student_id}</p>
-						<p>Score: {match.score.toFixed(2)}</p>
-						<img
-							src={match.face}
-							alt={`Face of student ${match.student_id}`}
-							width={100}
-						/>
-					</div>
-				))}
+					<CardContent className="flex flex-col items-center">
+						<video ref={videoRef} autoPlay playsInline className="max-w-full" />
+						<canvas ref={canvasRef} className="hidden" />
 
-			<pre className="bg-gray-100 p-2 mt-4 rounded w-full max-w-lg overflow-auto">
-				{status}
-			</pre>
+						<div className="mt-4 p-3 bg-muted rounded-lg min-h-[60px] w-full">
+							<div className="text-sm font-medium mb-1">Status:</div>
+							<div className="text-sm text-muted-foreground">{status}</div>
+							{isStreaming && (
+								<div className="text-xs text-green-600 mt-1">
+									● Scanning active
+								</div>
+							)}
+						</div>
+
+						<div className="flex flex-row space-x-5 items-center mt-4">
+							{!isStreaming && streamRef.current && (
+								<Button
+									onClick={() => setIsStreaming(true)}
+									className="py-2 px-4"
+								>
+									Resume Scanning
+								</Button>
+							)}
+							<Button
+								onClick={resetScanning}
+								variant="secondary"
+								className="py-2 px-4"
+							>
+								Scan Everyone Again
+							</Button>
+							<Button
+								onClick={stopCamera}
+								variant="destructive"
+								className="py-2 px-4"
+							>
+								Stop Camera
+							</Button>
+						</div>
+					</CardContent>
+				</Card>
+			</div>
+
+			<div className="w-80 max-h-screen overflow-y-auto">
+				<div className="mb-4">
+					<h3 className="text-lg font-semibold mb-2">
+						Recognized Students ({recognizedStudents.length})
+					</h3>
+				</div>
+
+				<div className="space-y-3">
+					{recognizedStudents.length === 0 ? (
+						<Card>
+							<CardContent className="pt-6">
+								<div className="text-center text-muted-foreground">
+									No students recognized yet
+								</div>
+							</CardContent>
+						</Card>
+					) : (
+						recognizedStudents
+							.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime()) // Most recent first
+							.map((student, idx) => (
+								<Card key={`${student.student_id}-${idx}`} className="relative">
+									<CardHeader className="pb-2">
+										<CardTitle className="text-base">
+											Student ID: {student.student_id}
+										</CardTitle>
+										<CardDescription className="text-xs">
+											Score: {student.score.toFixed(3)} | Recognized at:{" "}
+											{formatTimestamp(student.timestamp)}
+										</CardDescription>
+									</CardHeader>
+
+									<CardContent className="pt-2">
+										{student.face && (
+											<img
+												src={student.face}
+												alt={`Face of student ${student.student_id}`}
+												className="rounded w-16 h-16 object-cover"
+											/>
+										)}
+									</CardContent>
+
+									{/* Green indicator for recent recognition */}
+									{Date.now() - student.timestamp.getTime() < 3000 && (
+										<div className="absolute top-2 right-2 w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+									)}
+								</Card>
+							))
+					)}
+				</div>
+			</div>
 		</div>
 	);
 };

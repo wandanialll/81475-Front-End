@@ -1,15 +1,13 @@
-// src/views/CourseDashboard/CourseDashboard.tsx
 import React, { useEffect, useState } from "react";
 import { Users, UserCheck, UserX, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MetricCard } from "@/components/special/metricCard";
 import { StudentList } from "@/components/special/studentList";
-import { useParams } from "react-router-dom"; // Import useParams
-// import { useAuthStore } from "@/store/authStore"; // You might not need this directly here
+import { useParams } from "react-router-dom";
 import { getCourseDashboard } from "@/api";
 import { getOpenAttendanceSheets } from "@/api";
 import { closeAttendanceSheet } from "@/api";
-import { Link } from "react-router-dom"; // Import Link for navigation
+import { Link } from "react-router-dom";
 
 interface Student {
 	student_id: string;
@@ -24,11 +22,11 @@ interface CourseDetails {
 	totalPresent: number;
 	totalAbsents: number;
 	alerts: number;
-	students: Student[];
+	students: any[]; // Flexible type for raw API data
 }
 
 const CourseDashboard: React.FC = () => {
-	const { courseId } = useParams(); // Get the courseId from the URL
+	const { courseId } = useParams<{ courseId: string }>();
 	const [courseData, setCourseData] = useState<CourseDetails | null>(null);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
@@ -42,7 +40,9 @@ const CourseDashboard: React.FC = () => {
 			setError(null);
 			try {
 				if (courseId) {
-					const data = await getCourseDashboard(courseId); // Call your API with courseId
+					const data = await getCourseDashboard(courseId);
+					console.log("Course dashboard data:", data);
+					console.log("Students in course:", data.students);
 					setCourseData(data);
 				} else {
 					setError("Course ID not found in the URL.");
@@ -85,10 +85,21 @@ const CourseDashboard: React.FC = () => {
 		return <div>No course data available.</div>;
 	}
 
+	// Map students to match Student interface
+	const validStudents: Student[] = courseData.students
+		.map((student) => ({
+			student_id:
+				student.studentId?.toString() || student.student_id?.toString() || "",
+			name: student.name || "Unknown",
+			status: (student.status as "present" | "absent") || "absent",
+			lastSeen: student.lastSeen || "N/A",
+		}))
+		.filter((student) => student.student_id !== "");
+
 	return (
 		<div className="flex min-h-screen w-full">
 			<div className="flex-1">
-				<main className="p-6">
+				<main>
 					<div className="mb-6">
 						<h1 className="text-2xl font-bold">{courseData.name}</h1>
 					</div>
@@ -169,13 +180,8 @@ const CourseDashboard: React.FC = () => {
 										>
 											Close Sheet
 										</Button>
-										{/* navigate to expand sheet details at AttendanceSheet */}
-										{/* <Link
-											to={`/course/${courseId}/attendance/sheet/${sheet.session_id}`}
-										> */}
 										<Link to={`/face-scan?session_id=${sheet.session_id}`}>
-											Mark Attendance via Face
-											<Button>View Details</Button>
+											<Button>Start Attendance</Button>
 										</Link>
 									</div>
 								))}
@@ -185,7 +191,7 @@ const CourseDashboard: React.FC = () => {
 
 					<div className="mt-6">
 						<StudentList
-							students={courseData.students}
+							students={validStudents}
 							courseName={courseData.name}
 							onAddStudent={() => console.log("Add student")}
 						/>
