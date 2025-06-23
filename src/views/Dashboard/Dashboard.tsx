@@ -17,7 +17,7 @@ import { useAuthStore } from "@/store/authStore";
 import { getMainDashboard } from "@/api";
 import { useEffect, useState } from "react";
 import AttendanceLineChart from "@/components/special/AttendanceLineChart";
-import { Card, CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 export default function Dashboard() {
 	const user = useAuthStore((state) => state.user);
@@ -61,7 +61,7 @@ export default function Dashboard() {
 		) ?? [];
 
 	return (
-		<div className="flex min-h-screen w-full">
+		<div className="flex min-h-screen w-full mb-5">
 			<div className="flex-1">
 				<main>
 					<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -97,12 +97,15 @@ export default function Dashboard() {
 								<AttendanceLineChart />
 							</div>
 						</div> */}
-						<h2 className="text-xl font-semibold mb-4 underline underline-offset-1 decoration-3 decoration-primary">
+						{/* <h2 className="text-xl font-semibold mb-4 underline underline-offset-1 decoration-3 decoration-primary">
 							Overall Attendance Performance
-						</h2>
+						</h2> */}
 						<Card>
 							<CardHeader>
 								{/* <CardTitle>Overall Attendance Performance</CardTitle> */}
+								<h2 className="text-xl font-semibold mb-4 text-white">
+									Overall Attendance Performance
+								</h2>
 							</CardHeader>
 							<div className="h-[300px] rounded-lg pr-6">
 								<AttendanceLineChart />
@@ -111,10 +114,14 @@ export default function Dashboard() {
 					</div>
 
 					<div className="mt-6">
-						<StudentList
-							students={allStudentNames}
-							onAddStudent={() => console.log("Add student")}
-						/>
+						<Card>
+							<CardContent>
+								<StudentList
+									students={allStudentNames}
+									onAddStudent={() => console.log("Add student")}
+								/>
+							</CardContent>
+						</Card>
 					</div>
 				</main>
 			</div>

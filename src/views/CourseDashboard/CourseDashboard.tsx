@@ -4,10 +4,14 @@ import { Button } from "@/components/ui/button";
 import { MetricCard } from "@/components/special/metricCard";
 import { StudentList } from "@/components/special/studentList";
 import { useParams } from "react-router-dom";
-import { getCourseDashboard } from "@/api";
-import { getOpenAttendanceSheets } from "@/api";
-import { closeAttendanceSheet } from "@/api";
+import {
+	getCourseDashboard,
+	getOpenAttendanceSheets,
+	closeAttendanceSheet,
+} from "@/api";
 import { Link } from "react-router-dom";
+import { Card, CardContent } from "@/components/ui/card";
+import AttendanceLineChartCourse from "@/components/special/AttendanceLineChartCourse";
 
 interface Student {
 	student_id: string;
@@ -22,7 +26,7 @@ interface CourseDetails {
 	totalPresent: number;
 	totalAbsents: number;
 	alerts: number;
-	students: any[]; // Flexible type for raw API data
+	students: any[];
 }
 
 const CourseDashboard: React.FC = () => {
@@ -81,11 +85,10 @@ const CourseDashboard: React.FC = () => {
 		return <div>Error: {error}</div>;
 	}
 
-	if (!courseData) {
+	if (!courseData || !courseId) {
 		return <div>No course data available.</div>;
 	}
 
-	// Map students to match Student interface
 	const validStudents: Student[] = courseData.students
 		.map((student) => ({
 			student_id:
@@ -110,35 +113,42 @@ const CourseDashboard: React.FC = () => {
 							icon={<Users className="h-4 w-4" />}
 						/>
 						<MetricCard
-							bgColor="green-100"
 							title="Total Present"
 							value={courseData.totalPresent.toString()}
 							icon={<UserCheck className="h-4 w-4" />}
 						/>
 						<MetricCard
-							bgColor="rose-100"
 							title="Total Absents"
 							value={courseData.totalAbsents.toString()}
 							icon={<UserX className="h-4 w-4" />}
 						/>
 						<MetricCard
-							bgColor="rose-100"
 							title="Alerts/Flags"
 							value={courseData.alerts.toString()}
 							icon={<AlertTriangle className="h-4 w-4" />}
 						/>
 					</div>
 
-					<div className="mt-6">
+					{/* <div className="mt-6">
 						<div className="rounded-lg border bg-card p-4">
 							<h2 className="text-xl font-semibold mb-4">
 								{courseData.name}'s Attendance Overview
 							</h2>
-							<div className="h-[300px] rounded-lg bg-gray-100/50">
-								{/* You'll likely want to render a chart or more detailed attendance info here */}
+							<div className="h-[300px] rounded-lg pr-5">
+								<AttendanceLineChartCourse courseId={courseId} />
 							</div>
 						</div>
-					</div>
+					</div> */}
+					<Card className="mt-5">
+						{/* <CardHeader>
+							<CardTitle>{courseData.name}'s Attendance Overview</CardTitle>
+						</CardHeader> */}
+						<CardContent>
+							<div className="h-[300px] rounded-lg pr-5">
+								<AttendanceLineChartCourse courseId={courseId} />
+							</div>
+						</CardContent>
+					</Card>
 
 					<div className="mt-6">
 						<h2 className="text-xl font-semibold mb-2">
@@ -151,9 +161,9 @@ const CourseDashboard: React.FC = () => {
 						) : (
 							<div className="space-y-4">
 								{openSheets.map((sheet) => (
-									<div
+									<Card
 										key={sheet.session_id}
-										className="flex items-center justify-between border p-3 rounded-md bg-white shadow-sm"
+										className="flex flex-row justify-between p-5"
 									>
 										<div>
 											<p className="font-medium">
@@ -163,39 +173,44 @@ const CourseDashboard: React.FC = () => {
 												Started: {new Date(sheet.started_at).toLocaleString()}
 											</p>
 										</div>
-										<Button
-											variant="destructive"
-											onClick={async () => {
-												try {
-													await closeAttendanceSheet(sheet.session_id);
-													setOpenSheets((prev) =>
-														prev.filter(
-															(s) => s.session_id !== sheet.session_id
-														)
-													);
-												} catch (err: any) {
-													console.error("Error closing attendance sheet:", err);
-												}
-											}}
-										>
-											Close Sheet
-										</Button>
-										<Link to={`/face-scan?session_id=${sheet.session_id}`}>
-											<Button>Start Attendance</Button>
-										</Link>
-									</div>
+										<div className="space-x-5">
+											<Button
+												variant="destructive"
+												onClick={async () => {
+													try {
+														await closeAttendanceSheet(sheet.session_id);
+														setOpenSheets((prev) =>
+															prev.filter(
+																(s) => s.session_id !== sheet.session_id
+															)
+														);
+													} catch (err: any) {
+														console.error(
+															"Error closing attendance sheet:",
+															err
+														);
+													}
+												}}
+											>
+												Close Sheet
+											</Button>
+											<Link to={`/face-scan?session_id=${sheet.session_id}`}>
+												<Button>Start Attendance</Button>
+											</Link>
+										</div>
+									</Card>
 								))}
 							</div>
 						)}
 					</div>
 
-					<div className="mt-6">
+					<Card className="mt-5 p-5 mb-5">
 						<StudentList
 							students={validStudents}
 							courseName={courseData.name}
 							onAddStudent={() => console.log("Add student")}
 						/>
-					</div>
+					</Card>
 				</main>
 			</div>
 		</div>

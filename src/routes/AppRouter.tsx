@@ -12,10 +12,12 @@ import EnrollmentPage from "@/views/Enrollment/Enrollment";
 import StudentPhotos from "@/views/StudentPhotos/StudentPhotos";
 import FaceRecognition from "@/views/AttendancePage/AttendancePage";
 import Chat from "@/views/Chat/Chat";
-import FaceScan from "@/components/special/FaceScan";
+//import FaceScan from "@/components/special/FaceScan";
 import MainLayout from "@/components/layout/MainLayout";
 import AttendanceSheet from "@/views/AttendanceSheet/AttendanceSheet";
 import StudentDetails from "@/components/special/StudentDetails";
+import EnrollmentSuccessPage from "@/views/Enrollment/EnrollmentSucces";
+import CombinedScan from "@/views/AttendanceFocusPage/AttendanceFocusPage";
 
 interface PrivateRouteProps {
 	children: React.ReactElement;
@@ -32,6 +34,7 @@ export default function AppRouter() {
 			<Routes>
 				<Route path="/login" element={<Login />} />
 				<Route path="/enrollment" element={<EnrollmentPage />} />
+				<Route path="/enrollment-success" element={<EnrollmentSuccessPage />} />
 				<Route path="/studentphotos" element={<StudentPhotos />} />
 				<Route path="/recognition" element={<FaceRecognition />} />
 
@@ -47,7 +50,8 @@ export default function AppRouter() {
 					<Route path="create-attendance" element={<CreateAttendance />} />
 					<Route path="courses" element={<Courses />} />
 					<Route path="chat" element={<Chat />} />
-					<Route path="face-scan" element={<FaceScan />} />
+					{/* <Route path="face-scan" element={<FaceScan />} /> */}
+					<Route path="face-scan" element={<CombinedScan />} />
 					<Route
 						path="course/:courseId/dashboard"
 						element={<CourseDashboard />}

@@ -7,9 +7,9 @@ const token = localStorage.getItem("token"); // Get the token from local storage
 
 // declare root url for all api calls
 //const rootUrl = "https://railwaytesting-production-f102.up.railway.app/";
-const rootUrl = "http://localhost:5000/";
+//const rootUrl = "http://localhost:5000/";
 //const rootUrl = "http://152.42.239.54/";
-//const rootUrl = "https://api.wandanial.com/";
+const rootUrl = "https://api.wandanial.com/";
 
 //chrome takle bukak camera
 
@@ -105,6 +105,7 @@ export const closeAttendanceSheet = async (sheetId: string) => {
 			},
 		}
 	);
+	console.log("Close sheet response:", response.data);
 	return response.data;
 };
 
@@ -131,11 +132,15 @@ export const search = async (query: string) => {
 
 // enrollment
 
-export const enroll = async (name: string, photos: File[]) => {
+export const enroll = async (
+	name: string,
+	studentId: string,
+	photos: File[]
+) => {
 	const formData = new FormData();
 	formData.append("name", name);
+	formData.append("student_id", studentId);
 
-	// Append all photos with the **same** field name "photo"
 	photos.forEach((photo, index) => {
 		if (photo) {
 			formData.append("photo", photo, `${name}_${index + 1}.jpg`);
@@ -158,6 +163,33 @@ export const getLecturerAttendancePerformance = async () => {
 		{
 			headers: {
 				Authorization: `Bearer ${localStorage.getItem("token")}`,
+			},
+		}
+	);
+	return response.data;
+};
+
+// fetch attendance performance by course
+export const getCourseAttendancePerformance = async (courseId: string) => {
+	const response = await axios.get(
+		`${rootUrl}api/course/${courseId}/attendance/details`,
+		{
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
+			},
+		}
+	);
+	return response.data;
+};
+
+export const generateEmbedding = async (studentId: string) => {
+	const response = await axios.post(
+		`${rootUrl}api/embedding/generate`,
+		{ student_id: studentId },
+		{
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
+				"Content-Type": "application/json",
 			},
 		}
 	);
@@ -194,6 +226,35 @@ export const fetchFacialRecognitionAttendance = async (
 	return response.data;
 };
 
+export const fetchFocusIndex = async (
+	sessionId: string,
+	imageBase64: string,
+	reset: boolean = false
+) => {
+	const payload: any = {
+		session_id: sessionId,
+	};
+
+	if (reset) {
+		payload.reset = true;
+	} else if (imageBase64) {
+		payload.image = imageBase64;
+	} else {
+		throw new Error("No image provided");
+	}
+	const response = await axios.post(
+		`${rootUrl}api/attendance/calculate-focus-index`,
+		payload,
+		{
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
+				"Content-Type": "application/json",
+			},
+		}
+	);
+	return response.data;
+};
+
 // student details
 export const getStudentDetails = async (studentId: string) => {
 	const response = await axios.get(
@@ -201,7 +262,44 @@ export const getStudentDetails = async (studentId: string) => {
 		{
 			headers: {
 				Authorization: `Bearer ${localStorage.getItem("token")}`,
-				"Content-Type": "application/json",
+				// "Content-Type": "application/json",
+			},
+		}
+	);
+	return response.data;
+};
+
+export const getChatResponse = async (userMessage: string, history: any[]) => {
+	try {
+		const response = await axios.post(
+			`${rootUrl}api/chat`,
+			{
+				message: userMessage,
+				history: history.slice(-10),
+			},
+			{
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${localStorage.getItem("token")}`,
+				},
+			}
+		);
+		console.log("API Response:", response.data);
+
+		// ✅ Return full response data, not just the message
+		return response.data;
+	} catch (err) {
+		console.error("API call failed:", err);
+		throw err;
+	}
+};
+
+export const getLecturerCoursesWithFocusIndex = async () => {
+	const response = await axios.get(
+		`${rootUrl}api/lecturer/courses/focus-index`,
+		{
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
 			},
 		}
 	);

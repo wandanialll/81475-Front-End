@@ -4,8 +4,9 @@
 
 html,
 body {
-	font-family: "Ubuntu", "Open Sans", sans-serif;
-	font-weight: 400; /* Regular weight for Nunito */
+	font-family: "Open Sans", "Ubuntu", sans-serif;
+	font-weight: 500; /* Regular weight for Nunito */
+	color: white;
 }
 
 @custom-variant dark (&:is(.dark *));

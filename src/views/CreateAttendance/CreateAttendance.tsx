@@ -13,6 +13,7 @@ import { createAttendanceSheet } from "@/api";
 import { useAuthStore } from "@/store/authStore";
 import { useNavigate } from "react-router-dom";
 import { CheckCircle, AlertCircle, FileText, Users } from "lucide-react";
+import { Card } from "@/components/ui/card";
 
 const CreateAttendanceSheet = () => {
 	const [courses, setCourses] = useState<any[]>([]);
@@ -69,7 +70,7 @@ const CreateAttendanceSheet = () => {
 	);
 
 	return (
-		<div className="min-h-full flex items-center justify-center">
+		<Card className="min-h-screen flex items-center justify-center mb-5">
 			<div className="w-full max-w-md pb-10">
 				{/* Header Section */}
 				<div className="text-center mb-8">
@@ -85,7 +86,7 @@ const CreateAttendanceSheet = () => {
 				</div>
 
 				{/* Main Card */}
-				<div className="bg-white rounded-xl shadow-lg border border-gray-200 p-8">
+				<div className="bg-white rounded-sm shadow-lg border border-gray-200 p-5">
 					<div className="space-y-6">
 						{/* Course Selection */}
 						<div className="space-y-3">
@@ -187,7 +188,7 @@ const CreateAttendanceSheet = () => {
 					</p>
 				</div>
 			</div>
-		</div>
+		</Card>
 	);
 };
 

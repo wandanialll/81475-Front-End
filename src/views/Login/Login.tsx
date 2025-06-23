@@ -45,13 +45,20 @@ export default function Login() {
 	};
 
 	return (
-		<div className="flex items-center justify-center h-screen bg-[url('/src/images/bg.jpg')] bg-cover bg-center">
-			<Card className="flex flex-row items-center p-5 space-x-5 bg-white/30 backdrop-blur-sm border border-white/40 shadow-lg ">
+		<div className="flex items-center justify-center h-screen bg-[url('/src/images/bg_5.jpg')] bg-cover bg-center">
+			<Card className="flex flex-row items-center p-5 space-x-5 bg-white/30 backdrop-blur-sm border border-white/40 shadow-lg">
 				<div className="w-max">
 					<img src={logo} alt="Logo" className="w-60 h-60 justify-center" />
 				</div>
 				<div className="flex flex-col items-center w-96 ">
 					<h2 className="text-2xl font-bold mb-4">Sign In</h2>
+					{/* show testing credentials */}
+					<p className="text-sm text-gray-500 mb-4">
+						Testing credentials: <br />
+						Email: <strong> fyptestcred@email.com </strong>
+						<br />
+						Password: <strong> fyptestcred25! </strong>
+					</p>
 					{error && (
 						<p className="text-red-500 text-sm mb-2">
 							{error}. Contact your system administrator

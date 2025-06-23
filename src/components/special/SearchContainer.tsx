@@ -115,7 +115,7 @@ export const SearchContainer: React.FC = () => {
 			</div> */}
 
 			{results.length > 0 && (
-				<ul className="absolute z-10 w-full bg-white border rounded-md shadow p-2 space-y-1 mt-1">
+				<ul className="absolute z-10 w-full bg-white border rounded-md shadow p-2 space-y-1 mt-1 text-black">
 					{results.map((res, idx) => {
 						console.log(`=== RENDERING RESULT ${idx} ===`);
 						console.log("Result object:", res);

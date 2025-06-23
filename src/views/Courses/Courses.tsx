@@ -2,13 +2,15 @@ import React, { useEffect } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useAuthStore } from "@/store/authStore";
-import { getLecturerCourses } from "@/api";
+//import { getLecturerCourses } from "@/api";
 import { useNavigate } from "react-router-dom";
+import { getLecturerCoursesWithFocusIndex } from "@/api";
 
 interface Course {
 	course_id: string;
 	name: string;
 	description: string;
+	latest_focus_index: number | null;
 }
 
 const Courses: React.FC = () => {
@@ -19,7 +21,7 @@ const Courses: React.FC = () => {
 	useEffect(() => {
 		const fetchCourses = async () => {
 			try {
-				const data = await getLecturerCourses();
+				const data = await getLecturerCoursesWithFocusIndex();
 				setCourses(data);
 			} catch (error) {
 				console.error("Failed to fetch courses", error);
@@ -38,13 +40,19 @@ const Courses: React.FC = () => {
 				{courses.map((course) => (
 					<Card
 						key={course.course_id}
-						className="hover:shadow-lg transition-shadow"
+						className="hover:shadow-lg transition-shadow text-white"
 					>
 						<CardHeader>
 							<CardTitle>{course.name}</CardTitle>
 						</CardHeader>
 						<CardContent>
 							<p>{course.name}</p>
+							<p>
+								<strong>Focus Index:</strong>{" "}
+								{course.latest_focus_index !== null
+									? course.latest_focus_index.toFixed(2)
+									: "N/A"}
+							</p>
 							<Button
 								className="mt-4"
 								onClick={() =>

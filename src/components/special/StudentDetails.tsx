@@ -119,7 +119,7 @@ const StudentDetails: React.FC = () => {
 
 	return (
 		<ErrorBoundary>
-			<div className="p-4 space-y-5">
+			<div className="mb-5 space-y-5">
 				<Card>
 					{/* <CardHeader>
 						<CardTitle className="text-lg font-semibold">
@@ -165,7 +165,7 @@ const StudentDetails: React.FC = () => {
 										}
 
 										return (
-											<div className="border p-2 rounded mt-1">
+											<div className="p-2 rounded">
 												{photoErrors[photo.photoId] ? (
 													<p className="text-red-600 text-sm">
 														{photoErrors[photo.photoId]}
@@ -186,7 +186,7 @@ const StudentDetails: React.FC = () => {
 														}
 													/>
 												)}
-												<p className="mt-2 text-sm">
+												{/* <p className="mt-2 text-sm">
 													<strong>Filename:</strong> {photo.filename || "N/A"}
 												</p>
 												<p className="text-sm">
@@ -194,7 +194,7 @@ const StudentDetails: React.FC = () => {
 												</p>
 												<p className="text-sm">
 													<strong>Photo ID:</strong> {photo.photoId}
-												</p>
+												</p> */}
 											</div>
 										);
 									})()

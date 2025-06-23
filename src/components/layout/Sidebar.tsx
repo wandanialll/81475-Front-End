@@ -7,8 +7,8 @@ export default function Sidebar() {
 	const { pathname } = useLocation();
 
 	return (
-		<aside className="w-48 text-black p-4 bg-white/20 backdrop-blur-lg border border-white/20 rounded-md shadow-lg m-5">
-			<div className="flex flex-row items-center rounded-sm p-2 mb-4 space-x-4">
+		<aside className="w-52 text-black p-4 bg-white/20 backdrop-blur-lg border border-white/20 rounded-md shadow-lg m-5 border border-white/40">
+			<div className="flex flex-row items-center rounded-sm p-2 mb-4 space-x-4 ">
 				<img src={icon} alt="Logo" className="w-16 h-16" />
 				<h2 className="text-lg text-primary font-bold">FiRASAT</h2>
 			</div>
@@ -16,9 +16,9 @@ export default function Sidebar() {
 				<Link
 					to="/"
 					className={clsx(
-						"hover:underline hover:underline-offset-3 hover:decoration-5 hover:decoration-primary p-2",
+						"hover:bg-white/10 hover:backdrop-blur-sm rounded-sm text-white hover:font-bold p-2 hover:border hover:border-white/30",
 						{
-							"underline underline-offset-1 decoration-3 decoration-primary":
+							"bg-white/30 backdrop-blur-sm rounded-sm text-white font-bold border border-white/40":
 								pathname === "/",
 						}
 					)}
@@ -28,9 +28,9 @@ export default function Sidebar() {
 				<Link
 					to="/create-attendance"
 					className={clsx(
-						"hover:underline hover:underline-offset-3 hover:decoration-5 hover:decoration-primary p-2",
+						"hover:bg-white/10 hover:backdrop-blur-sm rounded-sm text-white hover:font-bold p-2 hover:border hover:border-white/30",
 						{
-							"underline underline-offset-1 decoration-5 decoration-primary":
+							"bg-white/30 backdrop-blur-sm rounded-sm text-white font-bold border border-white/40":
 								pathname === "/create-attendance",
 						}
 					)}
@@ -40,9 +40,9 @@ export default function Sidebar() {
 				<Link
 					to="/courses"
 					className={clsx(
-						"hover:underline hover:underline-offset-3 hover:decoration-5 hover:decoration-primary p-2",
+						"hover:bg-white/10 hover:backdrop-blur-sm rounded-sm text-white hover:font-bold p-2 hover:border hover:border-white/30",
 						{
-							"underline underline-offset-1 decoration-3 decoration-primary":
+							"bg-white/30 backdrop-blur-sm rounded-sm text-white font-bold border border-white/40":
 								pathname === "/courses",
 						}
 					)}
@@ -52,9 +52,9 @@ export default function Sidebar() {
 				<Link
 					to="/chat"
 					className={clsx(
-						"hover:underline hover:underline-offset-3 hover:decoration-5 hover:decoration-primary p-2",
+						"hover:bg-white/10 hover:backdrop-blur-sm rounded-sm text-white hover:font-bold p-2 hover:border hover:border-white/30",
 						{
-							"underline underline-offset-1 decoration-3 decoration-primary":
+							"bg-white/30 backdrop-blur-sm rounded-sm text-white font-bold border border-white/40":
 								pathname === "/chat",
 						}
 					)}

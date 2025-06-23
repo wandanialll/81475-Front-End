@@ -25,8 +25,8 @@ interface StudentListProps {
 export function StudentList({
 	students,
 	courseName,
-	onAddStudent,
-}: StudentListProps) {
+}: // onAddStudent,
+StudentListProps) {
 	const navigate = useNavigate();
 
 	// Log students data for debugging
@@ -39,10 +39,10 @@ export function StudentList({
 	return (
 		<div className="space-y-4">
 			<div className="flex items-center justify-between">
-				<h2 className="text-xl font-semibold underline underline-offset-1 decoration-4 decoration-primary">
+				<h2 className="text-xl font-bold text-white">
 					{courseName ?? "Course"} Student List
 				</h2>
-				{onAddStudent && (
+				{/* {onAddStudent && (
 					<Button
 						onClick={onAddStudent}
 						className="bg-green-500 hover:bg-green-600 text-white"
@@ -50,15 +50,15 @@ export function StudentList({
 					>
 						Add Student
 					</Button>
-				)}
+				)} */}
 			</div>
-			<Table>
+			<Table className="text-white">
 				<TableHeader>
 					<TableRow>
-						<TableHead>Name</TableHead>
-						<TableHead>Status</TableHead>
-						<TableHead>Last Seen</TableHead>
-						<TableHead>Actions</TableHead>
+						<TableHead className="text-white font-bold">Name</TableHead>
+						<TableHead className="text-white font-bold">Status</TableHead>
+						<TableHead className="text-white font-bold">Last Seen</TableHead>
+						<TableHead className="text-white font-bold">Actions</TableHead>
 					</TableRow>
 				</TableHeader>
 				<TableBody>
@@ -81,7 +81,7 @@ export function StudentList({
 								<TableCell>
 									<Button
 										onClick={() => handleViewDetails(student.student_id)}
-										className="bg-blue-500 hover:bg-blue-600 text-white"
+										className="bg-blue-500 hover:bg-blue-600 text-white rounded-sm "
 										size="sm"
 										variant={"secondary_boxed"}
 									>

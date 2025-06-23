@@ -5,6 +5,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Send, AlertCircle } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
+import { getChatResponse } from "@/api";
+
 interface Message {
 	id: string;
 	role: "user" | "assistant";
@@ -28,27 +30,11 @@ export default function LLMChatInterface() {
 		history: Message[]
 	): Promise<string> => {
 		try {
-			const response = await fetch("http://localhost:5000/api/chat", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					message: userMessage,
-					history: history.slice(-10), // Send last 10 messages for context
-				}),
-			});
-
-			if (!response.ok) {
-				throw new Error(`HTTP error! status: ${response.status}`);
-			}
-
-			const data = await response.json();
-
-			if (data.success && data.response) {
-				return data.response;
+			const response = await getChatResponse(userMessage, history);
+			if (response.success && response.response) {
+				return response.response;
 			} else {
-				throw new Error(data.error || "Unknown error occurred");
+				throw new Error(response.error || "Unknown error occurred");
 			}
 		} catch (error) {
 			console.error("Backend request failed:", error);

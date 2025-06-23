@@ -5,7 +5,7 @@ import TopNav from "./TopNav";
 
 export default function MainLayout() {
 	return (
-		<div className="flex h-screen bg-[url('/src/images/bg.jpg')] bg-cover bg-center bg-fixed">
+		<div className="flex h-screen bg-[url('/src/images/bg_5.jpg')] bg-cover bg-center bg-fixed">
 			<Sidebar />
 			<div className="flex flex-col flex-1">
 				<div className="z-50">
