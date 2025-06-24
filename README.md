@@ -2,4 +2,8 @@
 
 **ACCESS THE FULL SITE AT:**
 
-[FULL SYSTEM ACCESS HERE](fyp.wandanial.com)
+[FULL SYSTEM ACCESS HERE](https://fyp.wandanial.com)
+
+OR
+
+https://fyp.wandanial.com
